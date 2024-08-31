@@ -43,4 +43,18 @@ class LibraryManagementSystemTest {
                 "Adding a book with null title should throw an IllegalArgumentException");
     }
 
+    @Test
+    public void addBookWithEmptyAuthorTest() {
+        Book book = new Book("title", "134-123-123-9875", "", 2004);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book with empty author name should throw an IllegalArgumentException");
+    }
+
+    @Test
+    public void addBookWithNullAuthorTest() {
+        Book book = new Book("title", "135-123-123-9875", null, 2004);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book with null author name should throw an IllegalArgumentException");
+    }
+
 }
