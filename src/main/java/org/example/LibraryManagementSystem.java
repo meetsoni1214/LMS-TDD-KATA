@@ -15,6 +15,12 @@ public class LibraryManagementSystem {
         return Collections.unmodifiableList(availableBooks);
     }
 
+    public void viewAvailableBooks() {
+        if (availableBooks.isEmpty()) {
+            System.out.println("Sorry, currently no books are available with us.");
+        }
+    }
+
     public void addBook(Book book) throws IllegalArgumentException {
         if (validateTitle(book.getTitle()) && validateAuthor(book.getAuthor()) && validatePublicationYear(book.getPublicationYear())
         && validateISBN(book.getISBN())) {
