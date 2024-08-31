@@ -15,6 +15,7 @@ public class LibraryManagementSystem {
     }
 
     public void addBook(Book book) throws IllegalArgumentException {
+        if (book.getTitle().isEmpty()) throw new IllegalArgumentException("Book title cannot be empty!");
         availableBooks.add(book);
         System.out.println("Book with ISBN " + book.getISBN() + " added successfully!");
     }
