@@ -171,4 +171,15 @@ class LibraryManagementSystemTest {
         assertFalse(borrowedBooks.contains(book));
     }
 
+    @Test
+    public void returnWrongBookTest() {
+        Book book = new Book("title", "987-123-123-1111", "author", 2004);
+        // Add a single books
+        lms.addBook(book);
+        // borrow that book
+        lms.borrowBook("987-123-123-1111");
+        assertThrows(IllegalArgumentException.class, () -> lms.returnBook("789-789-789-7899"),
+                "Trying to return a wrong book which is not yet borrowed should throw an IllegalArgumentException");
+    }
+
 }
