@@ -72,4 +72,18 @@ class LibraryManagementSystemTest {
                 "Adding a book having publication year < 100 should throw an IllegalArgumentException");
     }
 
+    @Test
+    public void addBookWithNullISBNTest() {
+        Book book = new Book("title", null, "author", 2000);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book having null ISBN should throw an IllegalArgumentException");
+    }
+
+    @Test
+    public void addBookWithImproperLengthISBNTest() {
+        Book book = new Book("title", "123", "author", 2000);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book having length != 16 should throw an IllegalArgumentException");
+    }
+
 }
