@@ -15,6 +15,7 @@ class LibraryManagementSystemTest {
 
     LibraryManagementSystem lms;
     public static final List<Book> availableBooks = LibraryManagementSystem.getAvailableBooks();
+    public static final List<Book> borrowedBooks = LibraryManagementSystem.getBorrowedBooks();
 
     // Note: All the test cases are written in such a way that they can be tested independently and all together also
     // to get the instance of the class before running each unit test
@@ -125,6 +126,17 @@ class LibraryManagementSystemTest {
         lms.addBook(book1);
         assertThrows(IllegalArgumentException.class, () -> lms.addBook(book2),
                 "Adding a book with duplicate ISBN should thrown an IllegalArgumentException");
+    }
+
+    @Test
+    public void borrowAvailableBookTest() {
+        Book book = new Book("title", "987-123-123-9876", "author", 2004);
+        // Add a single books
+        lms.addBook(book);
+        // available books before borrowing
+        int noOfAvailableBooks = availableBooks.size();
+        // borrowed books before borrowing
+        int noOfBorrowedBooks = borrowedBooks.size();
     }
 
 }
