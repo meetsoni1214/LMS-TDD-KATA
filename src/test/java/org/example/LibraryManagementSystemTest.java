@@ -86,4 +86,13 @@ class LibraryManagementSystemTest {
                 "Adding a book having length != 16 should throw an IllegalArgumentException");
     }
 
+    @Test
+    public void addBookWithDuplicateISBNTest() {
+        Book book1 = new Book("title", "987-123-123-9875", "author", 2004);
+        Book book2 = new Book("title", "987-123-123-9875", "author", 2004);
+        lms.addBook(book1);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book2),
+                "Adding a book with duplicate ISBN should thrown an IllegalArgumentException");
+    }
+
 }
