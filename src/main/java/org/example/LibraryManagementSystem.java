@@ -14,4 +14,9 @@ public class LibraryManagementSystem {
         return Collections.unmodifiableList(availableBooks);
     }
 
+    public void addBook(Book book) throws IllegalArgumentException {
+        availableBooks.add(book);
+        System.out.println("Book with ISBN " + book.getISBN() + " added successfully!");
+    }
+
 }
