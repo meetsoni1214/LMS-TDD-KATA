@@ -56,6 +56,19 @@ public class LibraryManagementSystem {
         }
         throw new IllegalArgumentException("Sorry the book with ISBN " + ISBN + " is not available!");
     }
+    public void returnBook(String ISBN){
+        // Using Iterator to safely and efficiently remove the book from the list while iterating it at the same time
+        Iterator<Book> iterator = borrowedBooks.iterator();
+        while (iterator.hasNext()) {
+            Book book = iterator.next();
+            if (book.getISBN().equals(ISBN)) {
+                iterator.remove();
+                availableBooks.add(book);
+                System.out.println("Book with ISBN " + ISBN + " returned Successfully!");
+                return;
+            }
+        }
+    }
     private boolean validateTitle(String title) throws IllegalArgumentException{
         if (title == null || title.isEmpty()) throw new IllegalArgumentException("Book title cannot be empty or null!");
         return true;
