@@ -1,23 +1,38 @@
 package org.example;
 
 import org.example.model.Book;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.Year;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LibraryManagementSystemTest {
 
     LibraryManagementSystem lms;
     public static final List<Book> availableBooks = LibraryManagementSystem.getAvailableBooks();
 
+    // Note: All the test cases are written in such a way that they can be tested independently and all together also
     // to get the instance of the class before running each unit test
     @BeforeEach
     public void setUp() {
         lms = new LibraryManagementSystem();
+    }
+
+    @Test
+    @Order(1)
+    public void viewAvailableBooksWhenEmptyLibraryTest() {
+        // Redirecting System.out to capture the output for assertions
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Test when no books are available
+        lms.viewAvailableBooks();
+        String expectedOutput = "Sorry, currently no books are available with us.";
+        assertTrue(outContent.toString().contains(expectedOutput));
     }
 
     @Test
