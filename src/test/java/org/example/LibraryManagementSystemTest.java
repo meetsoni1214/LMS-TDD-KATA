@@ -29,4 +29,11 @@ class LibraryManagementSystemTest {
         assertTrue(availableBooks.contains(book));
     }
 
+    @Test
+    public void addBookWithEmptyTitleTest() {
+        Book book = new Book("", "133-123-123-9875", "author", 2004);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book with empty title should throw an IllegalArgumentException");
+    }
+
 }
