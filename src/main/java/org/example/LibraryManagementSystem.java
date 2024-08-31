@@ -9,10 +9,14 @@ import java.util.List;
 
 public class LibraryManagementSystem {
     private static final List<Book> availableBooks = new ArrayList<>();
+    private static final List<Book> borrowedBooks = new ArrayList<>();
 
     // Declaring this methods so that other classes can only access the list in a read-only manner
     public static List<Book> getAvailableBooks() {
         return Collections.unmodifiableList(availableBooks);
+    }
+    public static List<Book> getBorrowedBooks() {
+        return Collections.unmodifiableList(borrowedBooks);
     }
 
     public void viewAvailableBooks() {
