@@ -4,6 +4,7 @@ import org.example.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Year;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,6 +56,20 @@ class LibraryManagementSystemTest {
         Book book = new Book("title", "135-123-123-9875", null, 2004);
         assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
                 "Adding a book with null author name should throw an IllegalArgumentException");
+    }
+
+    @Test
+    public void addBookWithFuturePublicationYearTest() {
+        Book book = new Book("title", "136-123-123-9875", "author", 2030);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book having publication year >" + Year.now() + " should throw an IllegalArgumentException");
+    }
+
+    @Test
+    public void addBookWithVeryOldPublicationYearTest() {
+        Book book = new Book("title", "137-123-123-9875", "author", 2);
+        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Adding a book having publication year < 100 should throw an IllegalArgumentException");
     }
 
 }
