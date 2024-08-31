@@ -38,6 +38,12 @@ public class LibraryManagementSystem {
     }
     private boolean validateISBN(String ISBN) throws IllegalArgumentException {
         if (ISBN == null || ISBN.length() != 16) throw new IllegalArgumentException("ISBN cannot be null or it must have length = 16!");
+
+        for (Book availableBook : availableBooks) {
+            if (availableBook.getISBN().equals(ISBN)) {
+                throw new IllegalArgumentException("Book cannot be added as there is already a book added with ISBN: " + ISBN);
+            }
+        }
         return true;
     }
 }
