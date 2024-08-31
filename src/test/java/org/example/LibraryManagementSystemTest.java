@@ -24,6 +24,9 @@ class LibraryManagementSystemTest {
         Book book = new Book("title", "987-123-123-9876", "author", 2004);
         // number of books before adding
         int noOfBooks = availableBooks.size();
+        lms.addBook(book);
+        assertEquals(noOfBooks + 1, availableBooks.size());
+        assertTrue(availableBooks.contains(book));
     }
 
 }
