@@ -36,6 +36,23 @@ class LibraryManagementSystemTest {
     }
 
     @Test
+    public void viewAvailableBooksTest() {
+        // Redirecting System.out to capture the output for assertions
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Add a single books
+        lms.addBook(new Book("Atomic Habits", "234-234-234-1255", "James Clear", 2018));
+        // Test When one book is available
+        lms.viewAvailableBooks();
+        String expectedOutput = "Following Books are available with us: \n";
+        assertTrue(outContent.toString().contains(expectedOutput));
+        assertTrue(outContent.toString().contains("Title: Atomic Habits"));
+        assertTrue(outContent.toString().contains("Author: James Clear"));
+        assertTrue(outContent.toString().contains("ISBN: 234-234-234-1255"));
+        assertTrue(outContent.toString().contains("PublicationYear: 2018"));
+    }
+
+    @Test
     public void addBookTest() {
         Book book = new Book("title", "987-123-123-9876", "author", 2004);
         // number of books before adding
