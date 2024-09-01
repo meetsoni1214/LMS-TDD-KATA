@@ -2,10 +2,12 @@ package org.example;
 
 import org.example.model.Book;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-
         LibraryManagementSystem lms = new LibraryManagementSystem();
+        System.out.println("Welcome to Library Management System!");
         lms.viewAvailableBooks();
         try {
             lms.addBook(new Book("Ikigai", "123-123-123-1233", "Japanese Guy", 2000));

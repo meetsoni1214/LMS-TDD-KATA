@@ -11,7 +11,7 @@ This is a simple library management system entirely implemented using a Test Dri
   - [Installation](#installation)
 - [Running the tests](#running-the-tests)
 - [Test Coverage](#test-coverage)
-- [How to use?](#how-to-use?)
+- [How to use?](#how-to-use)
 - [Built with](#built-with)
 - [Authors](#authors)
 
