@@ -9,14 +9,14 @@ import java.util.Iterator;
 import java.util.List;
 
 public class LibraryManagementSystem {
-    private static final List<Book> availableBooks = new ArrayList<>();
-    private static final List<Book> borrowedBooks = new ArrayList<>();
+    private final List<Book> availableBooks = new ArrayList<>();
+    private final List<Book> borrowedBooks = new ArrayList<>();
 
     // Declaring this methods so that other classes can only access the list in a read-only manner
-    public static List<Book> getAvailableBooks() {
+    public List<Book> getAvailableBooks() {
         return Collections.unmodifiableList(availableBooks);
     }
-    public static List<Book> getBorrowedBooks() {
+    public List<Book> getBorrowedBooks() {
         return Collections.unmodifiableList(borrowedBooks);
     }
     public void viewAvailableBooks() {
@@ -42,6 +42,11 @@ public class LibraryManagementSystem {
         }
     }
     public void borrowBook(String ISBN) throws IllegalArgumentException {
+
+        if (borrowedBooks.size() == 2) {
+            throw new IllegalArgumentException("Trying to exceed the maximum limit of allowed borrowed books");
+        }
+
         // Using Iterator to safely and efficiently remove the book from the list while iterating it at the same time
         Iterator<Book> iterator = availableBooks.iterator();
         while (iterator.hasNext()) {

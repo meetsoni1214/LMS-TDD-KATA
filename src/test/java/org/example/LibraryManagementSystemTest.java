@@ -10,26 +10,27 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LibraryManagementSystemTest {
 
-    LibraryManagementSystem lms;
-    public static final List<Book> availableBooks = LibraryManagementSystem.getAvailableBooks();
-    public static final List<Book> borrowedBooks = LibraryManagementSystem.getBorrowedBooks();
+    private LibraryManagementSystem lms;
+    public List<Book> availableBooks;
+    public List<Book> borrowedBooks;
 
     // Note: All the test cases are written in such a way that they can be tested independently and all together also
     // to get the instance of the class before running each unit test
     @BeforeEach
     public void setUp() {
         lms = new LibraryManagementSystem();
+        availableBooks = lms.getAvailableBooks();
+        borrowedBooks = lms.getBorrowedBooks();
     }
 
     @Test
-    @Order(1)
     public void viewAvailableBooksWhenEmptyLibraryTest() {
         // Redirecting System.out to capture the output for assertions
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
+//        LibraryManagementSystem newlms = new LibraryManagementSystem();;
         // Test when no books are available
         lms.viewAvailableBooks();
         String expectedOutput = "Sorry, currently no books are available with us.";
@@ -180,5 +181,23 @@ class LibraryManagementSystemTest {
         lms.borrowBook("987-123-123-1111");
         assertThrows(IllegalArgumentException.class, () -> lms.returnBook("789-789-789-7899"),
                 "Trying to return a wrong book which is not yet borrowed should throw an IllegalArgumentException");
+    }
+
+    @Test
+    public void borrowMaxTwoBooks() {
+        LibraryManagementSystem newlms = new LibraryManagementSystem();
+        Book book1 = new Book("The Four Agreements", "987-123-123-1118", "Don Miguel Ruiz", 1997);
+        Book book2 = new Book("The Four Agreements", "987-123-123-1119", "Don Miguel Ruiz", 1997);
+        Book book3 = new Book("The Four Agreements", "987-123-123-1117", "Don Miguel Ruiz", 1997);
+        // adding books for borrowing
+        newlms.addBook(book1);
+        newlms.addBook(book2);
+        newlms.addBook(book3);
+
+        newlms.borrowBook("987-123-123-1118");
+        newlms.borrowBook("987-123-123-1119");
+        Exception e = assertThrows(IllegalArgumentException.class, () -> newlms.borrowBook("987-123-123-1117"),
+                "Trying to exceed the maximum limit of allowed borrowed books");
+        assertEquals("Trying to exceed the maximum limit of allowed borrowed books",e.getMessage() );
     }
 }
