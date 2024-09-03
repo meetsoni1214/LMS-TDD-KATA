@@ -58,7 +58,7 @@ public class LibraryManagementSystem {
                 return;
             }
         }
-        throw new IllegalArgumentException("Sorry the book with ISBN " + ISBN + " is not available!");
+        throw new IllegalArgumentException("Trying to borrow an unavailable book");
     }
     public void returnBook(String ISBN) throws IllegalArgumentException {
         // Using Iterator to safely and efficiently remove the book from the list while iterating it at the same time
@@ -72,30 +72,40 @@ public class LibraryManagementSystem {
                 return;
             }
         }
-        throw new IllegalArgumentException("You are returning the wrong book with ISBN as: " + ISBN);
+        throw new IllegalArgumentException("Trying to return a wrong book which is not yet borrowed");
     }
     private boolean validateTitle(String title) throws IllegalArgumentException {
-        if (title == null || title.isEmpty()) throw new IllegalArgumentException("Book title cannot be empty or null!");
+        if (title == null)
+            throw new IllegalArgumentException("Book title cannot be null!");
+        else if (title.isEmpty())
+            throw new IllegalArgumentException("Book title cannot be empty");
         return true;
     }
     private boolean validateAuthor(String author) throws IllegalArgumentException {
-        if (author == null || author.isEmpty())
-            throw new IllegalArgumentException("Book Author cannot be empty or null!");
+        if (author == null)
+            throw new IllegalArgumentException("Book Author cannot be null!");
+        else if (author.isEmpty())
+            throw new IllegalArgumentException("Book Author name cannot be empty!");
         return true;
     }
     private boolean validatePublicationYear(int year) {
         // considering there are no books in the library older than this year ;)
-        if (year > Year.now().getValue() || year < 100)
+        if (year > Year.now().getValue())
             throw new IllegalArgumentException("Publication year must be between the range of 100 to " + Year.now());
+        else if (year < 100)
+            throw new IllegalArgumentException("Cannot add a book having publication year < 100");
+
         return true;
     }
     private boolean validateISBN(String ISBN) throws IllegalArgumentException {
-        if (ISBN == null || ISBN.length() != 16)
-            throw new IllegalArgumentException("ISBN cannot be null or it must have length = 16!");
+        if (ISBN == null)
+            throw new IllegalArgumentException("Cannot add a book having null ISBN");
+        else if (ISBN.length() != 16)
+            throw new IllegalArgumentException("Cannot add book having length != 16");
 
         for (Book availableBook : availableBooks) {
             if (availableBook.getISBN().equals(ISBN)) {
-                throw new IllegalArgumentException("Book cannot be added as there is already a book added with ISBN: " + ISBN);
+                throw new IllegalArgumentException("Cannot add book with duplicate ISBN");
             }
         }
         return true;

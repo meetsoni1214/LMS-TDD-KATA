@@ -30,7 +30,6 @@ class LibraryManagementSystemTest {
         // Redirecting System.out to capture the output for assertions
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-//        LibraryManagementSystem newlms = new LibraryManagementSystem();;
         // Test when no books are available
         lms.viewAvailableBooks();
         String expectedOutput = "Sorry, currently no books are available with us.";
@@ -65,57 +64,65 @@ class LibraryManagementSystemTest {
     @Test
     public void addBookWithEmptyTitleTest() {
         Book book = new Book("", "133-123-123-9875", "James Clear", 2018);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book with empty title should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Book title cannot be empty");
+        assertEquals("Book title cannot be empty", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithNullTitleTest() {
         Book book = new Book(null, "132-123-123-9875", "James Clear", 2018);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book with null title should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Book title cannot be null!");
+        assertEquals("Book title cannot be null!", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithEmptyAuthorTest() {
         Book book = new Book("Atomic Habits", "134-123-123-9875", "", 2018);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book with empty author name should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Book Author name cannot be empty!");
+        assertEquals("Book Author name cannot be empty!", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithNullAuthorTest() {
         Book book = new Book("Atomic Habits", "135-123-123-9875", null, 2018);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book with null author name should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Book Author cannot be null!");
+        assertEquals("Book Author cannot be null!", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithFuturePublicationYearTest() {
         Book book = new Book("The Alchemist", "136-123-123-9875", "Paulo Coelho", 2030);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book having publication year >" + Year.now() + " should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Publication year must be between the range of 100 to " + Year.now());
+        assertEquals("Publication year must be between the range of 100 to " + Year.now(), exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithVeryOldPublicationYearTest() {
         Book book = new Book("The Alchemist", "137-123-123-9875", "Paulo Coelho", 2);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book having publication year < 100 should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Cannot add a book having publication year < 100");
+        assertEquals("Cannot add a book having publication year < 100", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithNullISBNTest() {
         Book book = new Book("Sapiens: A Brief History of Humankind", null, "Yuval Noah Harari", 2011);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book having null ISBN should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Cannot add a book having null ISBN");
+        assertEquals("Cannot add a book having null ISBN", exceptionThrown.getMessage());
     }
 
     @Test
     public void addBookWithImproperLengthISBNTest() {
         Book book = new Book("Sapiens: A Brief History of Humankind", "123", "Yuval Noah Harari", 2011);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
-                "Adding a book having length != 16 should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book),
+                "Cannot add book having length != 16");
+        assertEquals("Cannot add book having length != 16", exceptionThrown.getMessage());
     }
 
     @Test
@@ -123,8 +130,9 @@ class LibraryManagementSystemTest {
         Book book1 = new Book("Sapiens: A Brief History of Humankind", "987-123-123-9875", "Yuval Noah Harari", 2011);
         Book book2 = new Book("Thinking, Fast and Slow", "987-123-123-9875", "Daniel Kahneman", 2011);
         lms.addBook(book1);
-        assertThrows(IllegalArgumentException.class, () -> lms.addBook(book2),
-                "Adding a book with duplicate ISBN should thrown an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.addBook(book2),
+                "Cannot add book with duplicate ISBN");
+        assertEquals("Cannot add book with duplicate ISBN", exceptionThrown.getMessage());
     }
 
     @Test
@@ -144,8 +152,9 @@ class LibraryManagementSystemTest {
         Book book = new Book("The Subtle Art of Not Giving a F*ck", "987-123-123-9811", "Mark Manson", 2016);
         // Add a single book
         lms.addBook(book);
-        assertThrows(IllegalArgumentException.class, () -> lms.borrowBook("654-987-987-9812"),
-                "Trying to borrow an unavailable book should thrown an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.borrowBook("654-987-987-9812"),
+                "Trying to borrow an unavailable book");
+        assertEquals("Trying to borrow an unavailable book", exceptionThrown.getMessage());
     }
 
     @Test
@@ -170,8 +179,9 @@ class LibraryManagementSystemTest {
         lms.addBook(book);
         // borrow an unavailable book
         lms.borrowBook("987-123-123-1111");
-        assertThrows(IllegalArgumentException.class, () -> lms.returnBook("789-789-789-7899"),
-                "Trying to return a wrong book which is not yet borrowed should throw an IllegalArgumentException");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.returnBook("789-789-789-7899"),
+                "Trying to return a wrong book which is not yet borrowed");
+        assertEquals("Trying to return a wrong book which is not yet borrowed", exceptionThrown.getMessage());
     }
 
     @Test
