@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class LibraryManagementSystemTest {
 
     private LibraryManagementSystem lms;
-    public List<Book> availableBooks;
-    public List<Book> borrowedBooks;
+    private List<Book> availableBooks;
+    private List<Book> borrowedBooks;
 
     // Note: All the test cases are written in such a way that they can be tested independently and all together also
     // to get the instance of the class before running each unit test
@@ -57,10 +57,8 @@ class LibraryManagementSystemTest {
     @Test
     public void addBookTest() {
         Book book = new Book("Ikigai", "987-123-123-9876", "Japanese Guy", 2000);
-        // number of books before adding
-        int noOfBooks = availableBooks.size();
         lms.addBook(book);
-        assertEquals(noOfBooks + 1, availableBooks.size());
+        assertEquals(1, availableBooks.size());
         assertTrue(availableBooks.contains(book));
     }
 
@@ -134,13 +132,9 @@ class LibraryManagementSystemTest {
         Book book = new Book("The Power of Habit", "987-123-123-9876", "Charles Duhigg", 2012);
         // Add a single book
         lms.addBook(book);
-        // available books before borrowing
-        int noOfAvailableBooks = availableBooks.size();
-        // borrowed books before borrowing
-        int noOfBorrowedBooks = borrowedBooks.size();
         lms.borrowBook("987-123-123-9876");
-        assertEquals(noOfAvailableBooks - 1, availableBooks.size());
-        assertEquals(noOfBorrowedBooks + 1, borrowedBooks.size());
+        assertEquals(0, availableBooks.size());
+        assertEquals(1, borrowedBooks.size());
         assertTrue(borrowedBooks.contains(book));
         assertFalse(availableBooks.contains(book));
     }
@@ -161,13 +155,10 @@ class LibraryManagementSystemTest {
         lms.addBook(book);
         // borrow that book
         lms.borrowBook("987-123-123-0000");
-        // available books before returning
-        int noOfAvailableBooks = availableBooks.size();
-        // borrowed books before returning
-        int noOfBorrowedBooks = borrowedBooks.size();
+        // return that borrowed book
         lms.returnBook("987-123-123-0000");
-        assertEquals(noOfAvailableBooks + 1, availableBooks.size());
-        assertEquals(noOfBorrowedBooks - 1, borrowedBooks.size());
+        assertEquals(1, availableBooks.size());
+        assertEquals(0, borrowedBooks.size());
         assertTrue(availableBooks.contains(book));
         assertFalse(borrowedBooks.contains(book));
     }
@@ -185,19 +176,18 @@ class LibraryManagementSystemTest {
 
     @Test
     public void borrowMaxTwoBooks() {
-        LibraryManagementSystem newlms = new LibraryManagementSystem();
         Book book1 = new Book("The Four Agreements", "987-123-123-1118", "Don Miguel Ruiz", 1997);
         Book book2 = new Book("The Four Agreements", "987-123-123-1119", "Don Miguel Ruiz", 1997);
         Book book3 = new Book("The Four Agreements", "987-123-123-1117", "Don Miguel Ruiz", 1997);
         // adding books for borrowing
-        newlms.addBook(book1);
-        newlms.addBook(book2);
-        newlms.addBook(book3);
+        lms.addBook(book1);
+        lms.addBook(book2);
+        lms.addBook(book3);
 
-        newlms.borrowBook("987-123-123-1118");
-        newlms.borrowBook("987-123-123-1119");
-        Exception e = assertThrows(IllegalArgumentException.class, () -> newlms.borrowBook("987-123-123-1117"),
+        lms.borrowBook("987-123-123-1118");
+        lms.borrowBook("987-123-123-1119");
+        Exception exceptionThrown = assertThrows(IllegalArgumentException.class, () -> lms.borrowBook("987-123-123-1117"),
                 "Trying to exceed the maximum limit of allowed borrowed books");
-        assertEquals("Trying to exceed the maximum limit of allowed borrowed books",e.getMessage() );
+        assertEquals("Trying to exceed the maximum limit of allowed borrowed books",exceptionThrown.getMessage() );
     }
 }
